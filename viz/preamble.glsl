@@ -1,4 +1,4 @@
-#version 130
+#version 120
 
 const float PI = 3.14159265358979323846;
 const float ISOSURFACE = 0.0;
@@ -102,10 +102,10 @@ vec3 distanceFieldNormal(vec3 pos, float eps) {
 // Object discrimination.
 
 // Prototype; generated at runtime and appended to this file.
-uint nearestNodeId(vec3 r0);
+int nearestNodeId(vec3 r0);
 
-vec3 matColor(uint nid) {
-  return texelFetch(nodeColors, ivec2(nid % 512u, nid / 512u), 0).rgb;
+vec3 matColor(int nid) {
+  return texture2D(nodeColors, ivec2(nid - 512 * (nid / 512), nid / 512), 0).rgb;
 }
 
 

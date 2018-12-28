@@ -49,7 +49,7 @@
     [(list 'c3f (vec3 x y z)) (glsl-vec3 x y z)]
     [(list 'c4f q) (glsl-quat q)]
     [(list 'cf x) (number->string (real->double-flonum x))]
-    [(list 'cu x) (string-append (number->string x) "u")]
+    [(list 'cu x) (number->string x)]
 
     [(list 'sub _ a b) (bin "-" (glsl-expr a) (glsl-expr b))]
     [(list 'add _ a b) (bin "+" (glsl-expr a) (glsl-expr b))]
@@ -82,7 +82,7 @@
 (define (glsl-stmt form)
   (match form
     [(list 'assignf r v) (decl "float" r v)]
-    [(list 'assignu r v) (decl "uint" r v)]
+    [(list 'assignu r v) (decl "int" r v)]
     [(list 'assign3f r v) (decl "vec3" r v)]
     [_ (error "bad statement passed to glsl-stmt: " form)]))
 
@@ -97,7 +97,7 @@
 
 (define (node->glsl-disc n)
   (let-values ([(r i s) (generate-statements n)])
-    (append (list "uint nearestNodeId(vec3 r0) {")
+    (append (list "int nearestNodeId(vec3 r0) {")
             (for/list ([st (in-list (prune-statements s i))])
               (string-append "  " (glsl-stmt st)))
             (list (string-append "  return r" (number->string i) ";"))

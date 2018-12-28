@@ -17,8 +17,6 @@ uniform int stepLimit;
 uniform bool showComplexity;
 uniform bool showDistance;
 
-out vec4 fragColor;
-
 void main() {
   // Paperwork!
 
@@ -73,7 +71,7 @@ void main() {
     d = (distanceField(tpos) - ISOSURFACE) * zoom;
     if (d <= closeEnough) {
       // Hit!
-      uint nid = nearestNodeId(tpos);
+      int nid = nearestNodeId(tpos);
       vec3 normal = distanceFieldNormal(tpos, closeEnough);
       vec3 nl_m = normalize(rLight);
       vec3 r_m = -reflect(nl_m, normal);
@@ -100,7 +98,7 @@ void main() {
   vec4 complexity = falseColor(float(stepsTaken) / float(stepLimit));
   vec4 distance = falseColor(clamp(d / closeEnough, 0., 1.));
 
-  fragColor = sqrt(showComplexity ? complexity
-                                  : showDistance ? distance : color);
+  gl_FragColor = sqrt(showComplexity ? complexity
+                                     : showDistance ? distance : color);
 }
 
